@@ -20,8 +20,8 @@ ui <- dashboardPage(
       menuItem("EDA", tabName = "eda", icon = icon("dashboard")), # 1. Item 'EDA'
       menuItem("SERIES DE TIEMPO", tabName = "ts", icon = icon("bar-chart-o")), # 2. Item 'ST'
       menuItem("Modelos", tabName = "Modelos", icon = icon("table"), #  1. Item 'Modelos'
-               menuSubItem("Arima",tabName = "arima"), # 1.1 subItem 'Arima'
                menuSubItem("Auto.Arima",tabName = "autoarima"), # 1.2 subItem 'AutoArima'
+               menuSubItem("Arima",tabName = "arima"), # 1.1 subItem 'Arima'
                menuSubItem("Red Neuronal",tabName = "res_n"), # 1.3 subItem 'RN'
                menuSubItem("Modelo Exponencial"   ,tabName = "mod_exp")) # 1.4 subItem 'ME'
     )
@@ -29,22 +29,22 @@ ui <- dashboardPage(
   dashboardBody(
     tabItems(
       tabItem(
-        tabName = "eda",
+        tabName = "eda", # pestaña con el nombre 'eda'
         tabBox(
-          width = 12,
+          width = 12, # ancho del contenedor de la pestaña
           fluidRow(
             column(
-              width = 3,
+              width = 3, # ancho de la columna
               selectInput(inputId = "año" , label = "Año: ", # box 'año'
-                          choices = c("Total", "2020","2021","2022","2023"),
-                          selected = "Total")
+                          choices = c("Total", "2020","2021","2022","2023"), # lista de años
+                          selected = "Total") # por defecto
             ),
             column(
               width = 3,
               selectInput(
                 inputId = "grupo", label = "Grupo", # box grupo
-                choices = c("Mes" = "mes" , "Semana" = "semana" , "Día Semana" = "dia" ,"Fecha" = "FECHA" ),
-                selected = "Fecha"
+                choices = c("Mes" = "mes" , "Semana" = "semana" ,"Fecha" = "FECHA" ), # lista grupo , "Día Semana" = "dia" 
+                selected = "Fecha" #por defecto
               )
             ),
             column(
@@ -57,22 +57,22 @@ ui <- dashboardPage(
           ), # Panel EDA / serie de tiempo / Grafico densidad / Boxplot
           tabPanel(
             title = "Serie de tiempo",
-            plotlyOutput("grafico_ts")
+            plotlyOutput("grafico_ts") # grafico serie de tiempo
           ),
           tabPanel(
             title = "Grafico densidad",
-            plotlyOutput("grafico_density")
+            plotlyOutput("grafico_density") # grafico para densidad
           ),
           tabPanel(
             title = "Boxplots",
             fluidRow(
               column(
                 width = 4,
-                plotlyOutput("boxplots_general")
+                plotlyOutput("boxplots_general") # boxplot año
               ),
               column(
                 width = 8,
-                plotlyOutput("boxplots")
+                plotlyOutput("boxplots")# boxplot de los grupos
               )
             )
           )
@@ -81,7 +81,7 @@ ui <- dashboardPage(
       
       tabItem(
         # Serie de tiempo ####
-        tabName = "ts",
+        tabName = "ts", # pestaña ts para serie de tiempo
         fluidRow(
           tabBox(
             width = 12,
@@ -96,18 +96,18 @@ ui <- dashboardPage(
             numericInput(inputId = "diff_number" ,min = 1,max = 5,value = 1,width = "150px",
                          label = "Diferencias"),
             fluidPage(
-              plotlyOutput("plot_seriediff"),
-              plotOutput("plot_seriediffACF"),
-              textOutput("ressultados")
+              plotlyOutput("plot_seriediff"), # plot diferenciacion
+              plotOutput("plot_seriediffACF"), # plot ACF
+              textOutput("ressultados") # texto para resultados
             )
           )
         )
       ),
       tabItem(
         # UI: ARIMA ####
-        tabName = "arima",
-        tableOutput("info_modarima"),
-        textOutput("tes_d"),
+        tabName = "arima", # pestaña modelo arima
+        tableOutput("info_modarima"), # tabla modelo arima
+        textOutput("tes_d"), # salida test dicky-fuller
         tabBox(
           # aqui modelos
           title = "Arima",
@@ -115,31 +115,31 @@ ui <- dashboardPage(
           fluidRow(
             column(
               width = 3,
-              numericInput(inputId = "p" ,label = "p" ,value = 0)
+              numericInput(inputId = "p" ,label = "p" ,value = 0) # inouto p (auto regresor) del modelo 
             ),
             column(
               width = 3,
-              numericInput(inputId = "d" ,label = "d" ,value = 0)
+              numericInput(inputId = "d" ,label = "d" ,value = 0) # input d (diferenciacion del modelo)
             ),
             column(
               width = 3,
-              numericInput(inputId = "q" ,label = "q" ,value = 0)
+              numericInput(inputId = "q" ,label = "q" ,value = 0) # inpunt q (promedio) del modelo
             )
           ),
           tabPanel(
-            title = "Fitted",
-            plotlyOutput("model_arima_fitted")
+            title = "Fitted", # panel de ajuste
+            plotlyOutput("model_arima_fitted") # grafica modelo ajustado
           ),
           tabPanel(
-            title = "Predicciones",
-            plotlyOutput("model_arima_pred")
+            title = "Predicciones", # panel predicciones
+            plotlyOutput("model_arima_pred") # grafica predicciones
           )
         )
       ),
       tabItem(
         # UI: AutoArima ####
-        tabName = "autoarima",
-        tableOutput("info_modauto"),
+        tabName = "autoarima", # pestaña modelo autoarima
+        tableOutput("info_modauto"),# tabla modelo autoarima
         tabBox(
           # aqui modelos
           title = "Auto Arima",
@@ -147,41 +147,41 @@ ui <- dashboardPage(
           numericInput("n_pred",min = 1,max = 100,label = "N° de días para la predicción: ",
                        value = 30,step = 5,width = "150px"), 
           tabPanel(
-            title = "fitted",
-            plotlyOutput("auto_arima_fitted")
+            title = "Fitted", # panel de ajuste
+            plotlyOutput("auto_arima_fitted") # grafica modelo ajustado
           ),
           tabPanel(
-            title = "Predicción",
-            plotlyOutput("predicciones_autoArima")
+            title = "Predicción", # panel predicciones
+            plotlyOutput("predicciones_autoArima") # grafica predicciones
           )
         ),
       ),
       tabItem(
         
         # UI: res_neuronal ####
-        tabName = "res_n",
-        tableOutput("info_modneural"), 
+        tabName = "res_n", # pestaña red neuronal
+        tableOutput("info_modneural"), # tabla modelo red neuronal
         tabBox(
           # aqui modelos
           title = "Red Neuronal",
           width =  12,
           tabPanel(
-            title = "Fitted",
-            plotlyOutput("redes_fitted")
+            title = "Fitted", #Panel de ajuste
+            plotlyOutput("redes_fitted") # grafica modelo ajustado
           ),
           tabPanel(
-            title = "Predicción",
+            title = "Predicción", # panel de prediccion
             fluidRow(
               column(
                 width = 3,
-                numericInput("size_red",label = "Capas" , min = 1,max = 10,value = 1)
+                numericInput("size_red",label = "Capas" , min = 1,max = 10,value = 1) # input de capas
               ),
               column(
                 width = 3,
-                numericInput("Rep",label = "Epocas" , min = 10,max = 100,value = 10,step = 10)
+                numericInput("Rep",label = "Epocas" , min = 10,max = 100,value = 10,step = 10) # input de epocas
               )
             ),
-            plotlyOutput("red_neuronal_predic")
+            plotlyOutput("red_neuronal_predic") # grafica predicciones
           )
         )
       ),
@@ -222,7 +222,7 @@ server <- function(input, output) {
     filtro <- input$año
     
     df <- df %>% mutate(mes = month(FECHA,label = TRUE) ,
-                        semana = week(FECHA), año = as.character(year(FECHA)))
+                        semana = week(FECHA), año = as.character(year(FECHA))) # columnas año, mes, semana
     if(filtro == "Total"){
       df <- df 
     }else{
@@ -230,17 +230,17 @@ server <- function(input, output) {
     }
     grupo <- input$grupo
     df <- df %>% group_by(grupo = get(grupo)) %>% 
-      summarise(promedio_calls = mean(`REAL CALLS`,na.rm = T))
+      summarise(promedio_calls = mean(`REAL CALLS`,na.rm = T)) # agrupacion por grupo seleccionado
     
     if(filtro == "Total"){
       titulo <- "Serie Temporal Calls"   
     }else(
-      titulo <- paste0("Seire Temporal calls : ", filtro )
+      titulo <- paste0("Serie Temporal calls : ", filtro )
     )
     
     
     if(input$tipo_grafico == TRUE){
-      fig1 <- plot_ly(data = df , x = ~ grupo ,
+      fig1 <- plot_ly(data = df , x = ~ grupo , # grafico scatter (dispersion)
                       y = ~promedio_calls , 
                       type = "scatter" , mode = "lines") %>%
         layout(xaxis = list(title = grupo),
@@ -256,7 +256,7 @@ server <- function(input, output) {
   })
   
   
-  
+  # grafico de densidad
   output$grafico_density <- renderPlotly({
     df <- data()
     #df <- data
@@ -289,7 +289,7 @@ server <- function(input, output) {
     return(fig1)
   })
   
-  
+  # grafico de boxplot
   output$boxplots <- renderPlotly({
     
     df <- data()
@@ -326,12 +326,12 @@ server <- function(input, output) {
                     type = "box" )
   }) 
   
-  data_serie <- reactive({
-    df_proyect <- data()
+  data_serie <- reactive({ #crea expresion reactiva de actualización automatica 
+    df_proyect <- data() # obtengo datos del df reactivo definido
     df_proyect <- df_proyect %>% 
-      complete(FECHA = seq(min(df_proyect$FECHA) , max(df_proyect$FECHA) , "days" ))
-    sum(is.na(df_proyect$`REAL CALLS`)) 
-    ts_proyect <- ts(df_proyect$`REAL CALLS`,frequency=90)
+      complete(FECHA = seq(min(df_proyect$FECHA) , max(df_proyect$FECHA) , "days" )) # filtro fila para cada día en el rango de fechas.
+    sum(is.na(df_proyect$`REAL CALLS`)) # valores NA
+    ts_proyect <- ts(df_proyect$`REAL CALLS`,frequency=7) # transformacion de datos a ts frecuencia 90
   })
   
   
@@ -384,12 +384,13 @@ server <- function(input, output) {
     p_value <- dickey_fuller_result$p.value
     alpha <- 0.05
     
-    cat("Hipotesis:\n")
-    cat("H0: Serie no estacionaria\n")
-    cat("H1: Serie estacionaria\n")
+    #cat("Hipotesis:\n")
+    #cat("H0: Serie no estacionaria\n")
+    #cat("H1: Serie estacionaria\n")
+    cat("Test Dicky-Fuller:  ")
     cat(sprintf("Estadistico de prueba: %.4f\n", test_stat))
     cat(sprintf("p-value: %.4f\n", p_value))
-    cat(sprintf("Alpha: %f\n", alpha))
+    #cat(sprintf("Alpha: %f\n", alpha))
     if (p_value > alpha) {
       cat("No se rechaza H0, por lo tanto la serie no es estacionaria.\n")
     } else {
@@ -586,12 +587,13 @@ server <- function(input, output) {
     p_value <- dickey_fuller_result$p.value
     alpha <- 0.05
     
-    cat("Hipotesis:\n")
-    cat("H0: Serie no estacionaria\n")
-    cat("H1: Serie estacionaria\n")
+    #cat("Hipotesis:\n")
+    #cat("H0: Serie no estacionaria\n")
+    #cat("H1: Serie estacionaria\n")
+    cat("Test Dicky-Fuller:  ")
     cat(sprintf("Estadistico de prueba: %.4f\n", test_stat))
     cat(sprintf("p-value: %.4f\n", p_value))
-    cat(sprintf("Alpha: %f\n", alpha))
+    #cat(sprintf("Alpha: %f\n", alpha))
     if (p_value > alpha) {
       cat("No se rechaza H0, por lo tanto la serie no es estacionaria.\n")
     } else {
